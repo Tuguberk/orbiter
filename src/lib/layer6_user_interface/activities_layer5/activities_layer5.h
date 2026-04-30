@@ -1787,9 +1787,6 @@ public:
 	int f_poset_classification_activity;
 	std::string poset_classification_activity_label;
 
-	//poset_classification::poset_classification_report_options
-	//	*report_options;
-
 
 	orbits_activity_description();
 	~orbits_activity_description();

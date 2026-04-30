@@ -531,6 +531,8 @@ void knowledge_base::quartic_curves_stab_gens(
 // #############################################################################
 
 
+// q=125 is missing
+
 
 int knowledge_base::cubic_surface_nb_reps(
 		int q)
