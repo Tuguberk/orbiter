@@ -153,7 +153,7 @@ void orbits_on_polynomials::init(
 
 
 	Action_global.all_point_orbits_from_generators(
-			A,
+			A2,
 			*Sch,
 			generating_set_small, // not: A->Strong_gens->gens,
 			target_go,
