@@ -931,11 +931,29 @@ data_structures::set_of_sets *tally::get_set_partition_and_types(
 		cout << "tally::get_set_partition_and_types" << endl;
 	}
 
-	SoS = NEW_OBJECT(data_structures::set_of_sets);
-	SoS->init_basic_with_Sz_in_int(data_length /* underlying_set_size */,
-			tally::nb_types, type_len, 0 /* verbose_level */);
 	nb_types = tally::nb_types;
+
+	SoS = NEW_OBJECT(data_structures::set_of_sets);
+
+	if (f_v) {
+		cout << "tally::get_set_partition_and_types before SoS->init_basic_with_Sz_in_int" << endl;
+	}
+
+	SoS->init_basic_with_Sz_in_int(
+			data_length /* underlying_set_size */,
+			tally::nb_types, type_len,
+			verbose_level);
+
+	if (f_v) {
+		cout << "tally::get_set_partition_and_types after SoS->init_basic_with_Sz_in_int" << endl;
+	}
+
+
 	types = NEW_int(nb_types);
+
+	if (f_v) {
+		cout << "tally::get_set_partition_and_types nb_types = " << nb_types << endl;
+	}
 	for (i = 0; i < nb_types; i++) {
 		f = type_first[i];
 		l = type_len[i];

@@ -114,8 +114,8 @@ private:
 		// The i-th row is the exponent vector of the i-th monomial
 
 
-	std::vector<std::string> symbols; // nb_variables
-	std::vector<std::string> symbols_latex; // nb_variables
+	std::vector<std::string> symbols; // [nb_variables]
+	std::vector<std::string> symbols_latex; // [nb_variables]
 
 	int *Variables; // [nb_monomials * degree]
 		// Variables contains the monomials written out
@@ -268,7 +268,7 @@ public:
 	void print_equation(
 			std::ostream &ost, int *coeffs);
 	std::string stringify_equation(
-			int *coeffs);
+			int *coeffs, int verbose_level);
 	void print_equation_simple(
 			std::ostream &ost, int *coeffs);
 	void print_equation_tex(

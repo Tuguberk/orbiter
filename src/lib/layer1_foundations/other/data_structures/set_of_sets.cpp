@@ -215,8 +215,11 @@ void set_of_sets::init_basic_with_Sz_in_int(
 		int underlying_set_size,
 		int nb_sets, int *Sz, int verbose_level)
 {
-	//int f_v = (verbose_level >= 1);
+	int f_v = (verbose_level >= 1);
 
+	if (f_v) {
+		cout << "set_of_sets::init_basic_with_Sz_in_int" << endl;
+	}
 	long int *Sz1;
 	int i;
 
@@ -225,9 +228,18 @@ void set_of_sets::init_basic_with_Sz_in_int(
 		Sz1[i] = Sz[i];
 	}
 
+	if (f_v) {
+		cout << "set_of_sets::init_basic_with_Sz_in_int before init_basic" << endl;
+	}
 	init_basic(underlying_set_size, nb_sets, Sz1, verbose_level);
+	if (f_v) {
+		cout << "set_of_sets::init_basic_with_Sz_in_int after init_basic" << endl;
+	}
 
 	FREE_lint(Sz1);
+	if (f_v) {
+		cout << "set_of_sets::init_basic_with_Sz_in_int done" << endl;
+	}
 }
 
 void set_of_sets::init_basic_constant_size(

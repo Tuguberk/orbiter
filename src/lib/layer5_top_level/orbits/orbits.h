@@ -491,7 +491,7 @@ public:
 // #############################################################################
 
 
-//! orbits of a group on polynomials using Schreier vectors
+//! orbits on polynomials using either groups::schreier or layer4_classification::orbits_schreier::orbit_of_equations
 
 class orbits_on_polynomials {
 public:

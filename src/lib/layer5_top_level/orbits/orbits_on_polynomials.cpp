@@ -548,6 +548,48 @@ void orbits_on_polynomials::compute_points(
 
 }
 
+
+#if 0
+void orbits_on_polynomials::compute_lines(
+		int verbose_level)
+// Points is a vector of vectors containing the orbits (as sets) one-by-one
+{
+	int *coeff;
+	int i;
+
+	coeff = NEW_int(HPD->get_nb_monomials());
+	Nb_lines = NEW_int(T->nb_orbits);
+
+
+	for (i = 0; i < T->nb_orbits; i++) {
+
+		algebra::ring_theory::longinteger_object go;
+		T->Reps[i].Strong_gens->group_order(go);
+
+		cout << i << " : ";
+		Lint_vec_print(cout, T->Reps[i].data, T->Reps[i].sz);
+		cout << " : ";
+		cout << go;
+
+		cout << " : ";
+
+		HPD->unrank_coeff_vector(coeff, T->Reps[i].data[0]);
+
+		std::vector<long int> Pts;
+
+		HPD->enumerate_points(coeff, Pts, verbose_level);
+
+		Points.push_back(Pts);
+		Nb_pts[i] = Pts.size();
+	}
+	FREE_int(coeff);
+
+}
+
+#endif
+
+
+
 void orbits_on_polynomials::report(
 		int verbose_level)
 // used to create a projective_geometry::projective_space_with_action
@@ -785,6 +827,7 @@ void orbits_on_polynomials::report(
 
 }
 
+
 void orbits_on_polynomials::prepare_data(
 		std::string &headings,
 		std::string *&Table,
@@ -837,6 +880,7 @@ void orbits_on_polynomials::prepare_data(
 
 
 
+
 void orbits_on_polynomials::create_heading(
 		std::string &heading, int &nb_cols)
 {
@@ -884,7 +928,7 @@ void orbits_on_polynomials::create_vector_of_strings(
 
 	string s_eqn_af;
 
-	s_eqn_af = HPD->stringify_equation(coeff);
+	s_eqn_af = HPD->stringify_equation(coeff, verbose_level);
 
 	v[4] = "\"" + s_eqn_af + "\"";
 

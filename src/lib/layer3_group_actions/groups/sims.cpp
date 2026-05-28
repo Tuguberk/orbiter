@@ -1829,8 +1829,7 @@ void sims::compute_coset_rep_path(
 	while (true) {
 
 		if (false) {
-			cout << "Path[" << depth - d
-					<< "]=" << jj << endl;
+			cout << "Path[" << depth - d << "]=" << jj << endl;
 		}
 		Path[depth - d] = jj;
 
@@ -1844,8 +1843,8 @@ void sims::compute_coset_rep_path(
 		}
 		else {
 			if (false) {
-				cout << "Label[" << depth - 1 - d
-						<< "]=" << label[i][jj] << endl;
+				cout << "Label[" << depth - 1 - d << "]"
+						"=" << label[i][jj] << endl;
 			}
 			Label[depth - 1 - d] = label[i][jj];
 		}
@@ -2720,146 +2719,6 @@ void sims::get_all_base_orbits(
 	if (f_v) {
 		cout << "sims::get_all_base_orbits done" << endl;
 	}
-}
-
-int sims::element_from_path_and_test_permutation_property(
-		int *elt, int &fail_depth, int verbose_level)
-// given coset representatives in path[], the corresponding
-// element is multiplied.
-// uses eltrk1, eltrk2, eltrk3
-{
-	int f_v = (verbose_level >= 1);
-	int f_vv = (verbose_level >= 2);
-	int i, j;
-
-	if (f_v) {
-		cout << "sims::element_from_path_and_test_permutation_property" << endl;
-	}
-
-	if (!A->is_matrix_group()) {
-		cout << "sims::element_from_path_and_test_permutation_property "
-				"not a matrix group" << endl;
-		exit(1);
-	}
-
-	if (f_vv) {
-		cout << "path=";
-		Int_vec_print(cout, path, A->base_len());
-		cout << endl;
-		cout << "A->degree=" << A->degree << endl;
-	}
-
-	fail_depth = A->base_len();
-	A->Group_element->element_one(eltrk1, false);
-	for (i = 0; i < A->base_len(); i++) {
-		j = path[i];
-		if (f_v) {
-			cout << "sims::element_from_path_and_test_permutation_property level "
-					<< i << " coset " << j << " before coset_rep" << endl;
-		}
-		coset_rep(eltrk3, i, j, verbose_level);
-
-
-		if (f_v) {
-			cout << "sims::element_from_path_and_test_permutation_property level "
-					<< i << " coset " << j << " after coset_rep" << endl;
-		}
-
-		if (f_vv) {
-			cout << "sims::element_from_path_and_test_permutation_property level "
-					<< i << " coset " << j << ":" << endl;
-			cout << "cosetrep:" << endl;
-			A->Group_element->element_print_quick(eltrk3, cout);
-			cout << endl;
-		}
-
-		//A->element_print_as_permutation(cosetrep, cout);
-		//cout << endl;
-
-		// pre multiply the coset representative:
-		A->Group_element->element_mult(eltrk3, eltrk1, eltrk2, 0);
-
-		// test unit vector property in row i:
-		algebra::basic_algebra::matrix_group *Matrix_group;
-
-		Matrix_group = A->get_matrix_group();
-		int d;
-		int idx_nonzero;
-
-		d = Matrix_group->n;
-		if (!Int_vec_of_Hamming_weight_one(eltrk2 + i * d, idx_nonzero, d)) {
-			fail_depth = i;
-			return false;
-		}
-
-
-
-		A->Group_element->element_move(eltrk2, eltrk1, 0);
-	}
-	A->Group_element->element_move(eltrk1, elt, 0);
-	if (f_v) {
-		cout << "sims::element_from_path_and_test_permutation_property done" << endl;
-	}
-	return true;
-}
-
-void sims::permutation_subgroup(
-		std::vector<long int> &Gens,
-		int verbose_level)
-{
-	algebra::ring_theory::longinteger_object go;
-	long int i, j, goi, cnt;
-	int *Elt;
-	int fail_depth;
-
-
-	Elt = NEW_int(A->elt_size_in_int);
-
-	group_order(go);
-	goi = go.as_lint();
-
-	cnt = 0;
-	for (i = 0; i < goi; i++) {
-
-		path_unrank_lint(i);
-
-		if ((i % 10000) == 0) {
-			cout << "sims::permutation_subgroup i=" << i << " / " << goi << endl;
-		}
-
-		if (element_from_path_and_test_permutation_property(
-				Elt, fail_depth, verbose_level - 2)) {
-
-			cout << "sims::permutation_subgroup " << i << " : "
-					<< " has the permutation property, cnt = " << cnt << endl;
-			A->Group_element->element_print(Elt, cout);
-
-			Gens.push_back(i);
-
-			cnt++;
-		}
-
-#if 1
-		else {
-
-			if (advance_at_given_level(
-					i, j, fail_depth)) {
-				i = j - 1;
-			}
-			else {
-				i = j;
-			}
-
-		}
-#endif
-	}
-	cout << "sims::permutation_subgroup "
-			"the order of the permutation subgroup is " << cnt << endl;
-	cout << "Number of generators = " << Gens.size() << endl;
-	cout << "Generators = ";
-	Lint_vec_stl_print(cout, Gens);
-	cout << endl;
-	FREE_int(Elt);
 }
 
 

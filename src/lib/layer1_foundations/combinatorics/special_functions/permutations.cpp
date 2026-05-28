@@ -922,7 +922,7 @@ void permutations::cycle_decomposition(
 	long int l, l1, first, next, len;
 	int cur_cycle;
 
-	//cout << "perm_cycle_type degree=" << degree << endl;
+	//cout << "permutations::cycle_decomposition degree=" << degree << endl;
 	nb_cycles = 0;
 	have_seen = NEW_int(degree);
 

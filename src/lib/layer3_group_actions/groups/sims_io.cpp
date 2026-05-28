@@ -956,12 +956,11 @@ void sims::report_all_transversal_elements(
 		cout << "sims::report_all_transversal_elements" << endl;
 	}
 
-	int *Elt;
 	algebra::ring_theory::longinteger_object go;
-	int i, j, ii;
+	int i;
 
-	Elt = NEW_int(A->elt_size_in_int);
 	group_order(go);
+
 	if (f_v) {
 		cout << "sims::report_all_transversal_elements go = " << go << endl;
 	}
@@ -975,78 +974,159 @@ void sims::report_all_transversal_elements(
 	print_generators_tex(ost);
 
 
-	for (i = A->base_len() - 1; i >= 0; i--) {
-
-		for (j = 0; j < orbit_len[i]; j++) {
-
-			if (j == 0 && i < orbit_len[i] - 1) {
-				// skip the identity in the upper transversals
-				continue;
-			}
-
-			Int_vec_zero(path, A->base_len());
-			path[i] = j;
-
-			if (f_v) {
-				cout << "sims::report_all_transversal_elements "
-						"before element_from_path Level " << i << " coset " << j << endl;
-			}
-
-			element_from_path(
-					Elt, 0 /* verbose_level */);
-
-			if (f_v) {
-				cout << "sims::report_all_transversal_elements "
-						"after element_from_path Level " << i << " coset " << j << endl;
-			}
-
-
-			if (f_v) {
-				cout << "sims::report_all_transversal_elements" << endl;
-				cout << "Level " << i << " coset " << j << " / " << orbit_len[i] << " : path= ";
-				for (ii = 0; ii < A->base_len(); ii++) {
-					cout << setw(5) << path[ii] << " ";
-				}
-				cout << "\\\\" << endl;
-			}
-
-			ost << "Level " << i << " coset " << j << " : path= ";
-			for (ii = 0; ii < A->base_len(); ii++) {
-				ost << setw(5) << path[ii] << " ";
-			}
-			ost << "\\\\" << endl;
-
-			string s1, s2;
-
-			s1 = A->Group_element->stringify_point(
-					A->base_i(i), verbose_level - 1);
-
-			s2 = A->Group_element->stringify_point(
-					A->orbit_ij(i, j), verbose_level - 1);
-
-			if (f_v) {
-				cout << "$" << A->base_i(i) << " \\mapsto " << A->orbit_ij(i, j) << "$\\\\" << endl;
-				cout << "$(" << s1 << ") \\mapsto (" << s2 << ")$\\\\" << endl;
-			}
-			ost << "$" << A->base_i(i) << " \\mapsto " << A->orbit_ij(i, j) << "$\\\\" << endl;
-			ost << "$(" << s1 << ") \\mapsto (" << s2 << ")$\\\\" << endl;
-
-			if (f_v) {
-				A->Group_element->element_print_latex(Elt, cout);
-			}
-			ost << "$" << endl;
-			A->Group_element->element_print_latex(Elt, ost);
-			ost << "$" << endl;
-			ost << endl;
-			//A->Group_element->element_print_as_permutation(Elt, ost);
-			//ost << endl;
-		}
+	if (A->base_len() != my_base_len) {
+		ost << "warning! base len mismatch \\\\" << endl;
+		ost << "A base len" << A->base_len() << " \\\\" << endl;
+		ost << "my base len" << my_base_len << " \\\\" << endl;
 	}
-	FREE_int(Elt);
+
+	ost << "Basic orbits:\\\\" << endl;
+
+	for (i = 0; i < my_base_len; i++) {
+
+		ost << "Basic orbit " << i << ":\\\\" << endl;
+		report_basic_orbit_elements_only(
+				ost, i, verbose_level);
+	}
+
+
+
+	ost << "Orbit transversals:\\\\" << endl;
+
+
+	for (i = my_base_len - 1; i >= 0; i--) {
+
+
+		report_basic_orbit_elements_only(
+				ost, i, verbose_level);
+
+
+		report_basic_orbit_transversal(
+				ost, i, verbose_level);
+
+
+	}
 
 	if (f_v) {
 		cout << "sims::report_all_transversal_elements done" << endl;
 	}
+}
+
+void sims::report_basic_orbit_transversal(
+		std::ostream &ost, int i, int verbose_level)
+{
+	int f_v = (verbose_level >= 1);
+
+	if (f_v) {
+		cout << "sims::report_basic_orbit_transversal" << endl;
+	}
+
+	int *Elt;
+
+	Elt = NEW_int(A->elt_size_in_int);
+
+
+	ost << "The orbit transversal is:\\\\" << endl;
+
+	int j;
+
+
+	for (j = 0; j < orbit_len[i]; j++) {
+
+#if 0
+		if (j == 0 && i < orbit_len[i] - 1) {
+			// skip the identity in the upper transversals
+			continue;
+		}
+#endif
+
+		Int_vec_zero(path, A->base_len());
+		path[i] = j;
+
+		if (f_v) {
+			cout << "sims::report_basic_orbit_transversal "
+					"before element_from_path Level " << i << " coset " << j << endl;
+		}
+
+		element_from_path(
+				Elt, 0 /* verbose_level */);
+
+		if (f_v) {
+			cout << "sims::report_basic_orbit_transversal "
+					"after element_from_path Level " << i << " coset " << j << endl;
+		}
+
+
+		if (f_v) {
+			int ii;
+
+			cout << "sims::report_basic_orbit_transversal" << endl;
+			cout << "Level " << i << " coset " << j << " / " << orbit_len[i] << " : path= ";
+			for (ii = 0; ii < A->base_len(); ii++) {
+				cout << setw(5) << path[ii] << " ";
+			}
+			cout << "\\\\" << endl;
+		}
+
+		ost << "Level " << i << " coset " << j << " : path= ";
+
+		int ii;
+
+		for (ii = 0; ii < my_base_len /*A->base_len()*/; ii++) {
+			ost << setw(5) << path[ii] << " ";
+		}
+		ost << "\\\\" << endl;
+
+		string s1, s2;
+
+		s1 = A->Group_element->stringify_point(
+				A->base_i(i), verbose_level - 1);
+
+		s2 = A->Group_element->stringify_point(
+				orbit[i][j] /*A->orbit_ij(i, j)*/, verbose_level - 1);
+
+		if (f_v) {
+			cout << "$" << A->base_i(i) << " \\mapsto " << orbit[i][j] /*A->orbit_ij(i, j)*/ << "$\\\\" << endl;
+			cout << "$(" << s1 << ") \\mapsto (" << s2 << ")$\\\\" << endl;
+		}
+		ost << "$" << A->base_i(i) << " \\mapsto " << orbit[i][j] /*A->orbit_ij(i, j)*/ << "$\\\\" << endl;
+		ost << "$(" << s1 << ") \\mapsto (" << s2 << ")$\\\\" << endl;
+
+		if (f_v) {
+			A->Group_element->element_print_latex(Elt, cout);
+		}
+		ost << "$" << endl;
+		A->Group_element->element_print_latex(Elt, ost);
+		ost << "$" << endl;
+		ost << endl;
+		//A->Group_element->element_print_as_permutation(Elt, ost);
+		//ost << endl;
+	}
+	FREE_int(Elt);
+
+}
+
+void sims::report_basic_orbit_elements_only(
+		std::ostream &ost, int i, int verbose_level)
+{
+	string s_base_pt, s_image_point;
+
+	s_base_pt = A->Group_element->stringify_point(
+			A->base_i(i), verbose_level - 1);
+
+	ost << "orbit " << i << "\\\\" << endl;
+	ost << "base point: $" << A->base_i(i) << "= (" << s_base_pt << ")$\\\\" << endl;
+	ost << "basic orbit has size " << orbit_len[i] << "\\\\" << endl;
+	ost << "basic orbit elements:\\\\" << endl;
+
+	int j;
+
+	for (j = 0; j < orbit_len[i]; j++) {
+		s_image_point = A->Group_element->stringify_point(
+			orbit[i][j] /*A->orbit_ij(i, j)*/, verbose_level - 1);
+		ost << "element $" << j << "$ is point $" << orbit[i][j] << "= (" << s_image_point << ")$\\\\" << endl;
+	}
+
 }
 
 void sims::save_list_of_elements(

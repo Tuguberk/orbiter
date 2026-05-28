@@ -477,6 +477,7 @@ void polynomial_function_domain::compute_polynomial_representation(
 	}
 
 	if (f_v) {
+		cout << "polynomial_function_domain::compute_polynomial_representation preliminary result" << endl;
 		cout << "preliminary result : ";
 		Poly[max_degree].print_equation(cout, coeff);
 		cout << endl;

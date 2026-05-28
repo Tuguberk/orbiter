@@ -1016,7 +1016,7 @@ void variety_object_with_action::export_data(
 	q = PA->P->Subspaces->F->q;
 	d = Variety_object->Ring->degree;
 
-	s_eqn = "\"" + Variety_object->Ring->stringify_equation(Variety_object->eqn) + "\"";
+	s_eqn = "\"" + Variety_object->Ring->stringify_equation(Variety_object->eqn, verbose_level) + "\"";
 	s_eqn_vec = "\"" + Int_vec_stringify(Variety_object->eqn, Variety_object->Ring->get_nb_monomials()) + "\"";
 
 	Table.push_back(std::to_string(n));

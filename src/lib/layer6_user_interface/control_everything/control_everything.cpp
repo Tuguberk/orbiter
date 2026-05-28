@@ -49,12 +49,13 @@ void orbiter_execute_command_line(
 	other::data_structures::string_tools ST;
 	int i;
 
-	//cout << "before ST.convert_arguments, argc=" << argc << endl;
+	//cout << "before ST.convert_arguments_and_add_sentinel, argc=" << argc << endl;
 
-	ST.convert_arguments(argc, argv, Argv);
+	ST.convert_arguments_and_add_sentinel(argc, argv, Argv);
 		// argc has changed!
+	// adds one argument as a sentinel
 
-	//cout << "after ST.convert_arguments, argc=" << argc << endl;
+	//cout << "after ST.convert_arguments_and_add_sentinel, argc=" << argc << endl;
 
 	//cout << "before Top_level_session.startup_and_read_arguments" << endl;
 	i = orbiter_startup_and_read_arguments(

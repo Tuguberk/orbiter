@@ -255,7 +255,7 @@ void quartic_curve_object_with_group::export_data(
 	q = DomA->PA->P->Subspaces->F->q;
 	d = QO->Variety_object->Ring->degree;
 
-	s_eqn = "\"" + QO->Variety_object->Ring->stringify_equation(QO->Variety_object->eqn) + "\"";
+	s_eqn = "\"" + QO->Variety_object->Ring->stringify_equation(QO->Variety_object->eqn, verbose_level) + "\"";
 	s_eqn_vec = "\"" + Int_vec_stringify(
 			QO->Variety_object->eqn,
 			QO->Variety_object->Ring->get_nb_monomials()) + "\"";

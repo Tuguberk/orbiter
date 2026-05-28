@@ -1229,6 +1229,8 @@ private:
 		// for 0 \le j < orbit_len[i].
 		// for orbit_len[i] \le j < A->deg, 
 		// the points not in the orbit are listed.
+		// The ordering of points in the orbit array is according to the
+		// order in which they are found in the Schreier algorithm.
 	int **orbit_inv;
 		// [my_base_len][transversal_length]
 		// orbit[i] is the inverse of the permutation orbit[i],
@@ -1239,6 +1241,17 @@ private:
 	int **prev; // [my_base_len][transversal_length]
 	int **label; // [my_base_len][transversal_length]
 	
+	// Let q be an element of the orbit in coset j, i.e. orbit[i][j] = q.
+	// p = prev[i][j] is the predecessor of q as a point number, not as a coset
+	// orbit_inv[i][p] is the coset associated with p.
+	// label[i][j] is the index s of the generator
+	// such that p*g_s = orbit[i][j] = the j-th orbit element in the i-th basic orbit
+
+	// The root node p0 is in coset 0.
+	// We have
+	// orbit[i][0] = p0, the root node,
+	// and prev[i][0] = -1 and label[i][0] is undefined
+
 
 	
 	// storage for temporary data and 
@@ -1395,7 +1408,7 @@ public:
 	void compute_coset_rep_path(
 			int i, int j, int &depth,
 			int *&Path, int *&Label,
-		int verbose_level);
+			int verbose_level);
 	void coset_rep_inv(
 			int *Elt, int i, int j,
 			int verbose_level_le);
@@ -1407,7 +1420,7 @@ public:
 		// result is in cosetrep
 	void extract_strong_generators_in_order(
 			data_structures_groups::vector_ge &SG,
-		int *tl, int verbose_level);
+			int *tl, int verbose_level);
 	void random_schreier_generator(
 			int *Elt, int verbose_level);
 		// computes random Schreier generator
@@ -1441,11 +1454,6 @@ public:
 			std::vector<int> &base_orbit_idx, int verbose_level);
 	void get_all_base_orbits(
 			std::vector<int> &base_orbit_idx, int verbose_level);
-	int element_from_path_and_test_permutation_property(
-			int *elt, int &fail_depth, int verbose_level);
-	void permutation_subgroup(
-			std::vector<long int> &Gens,
-			int verbose_level);
 
 
 	// sims_main.cpp:
@@ -1513,18 +1521,6 @@ public:
 		void (*choose_random_generator_for_subgroup)(
 			sims *G, int *Elt, int verbose_level), 
 		int verbose_level);
-
-	// sims3.cpp
-	void subgroup_make_characteristic_vector(
-			sims *Sub,
-		int *C, int verbose_level);
-	void normalizer_based_on_characteristic_vector(
-			int *C_sub,
-		int *Gen_idx, int nb_gens, int *N, long int &N_go,
-		int verbose_level);
-	void order_structure_relative_to_subgroup(
-			int *C_sub,
-		int *Order, int *Residue, int verbose_level);
 
 
 
@@ -1692,6 +1688,21 @@ public:
 			int *&Adj, int &sz,
 			data_structures_groups::vector_ge *gens_S,
 		int verbose_level);
+	void subgroup_make_characteristic_vector(
+			sims *Sub,
+		int *C, int verbose_level);
+	void normalizer_based_on_characteristic_vector(
+			int *C_sub,
+		int *Gen_idx, int nb_gens, int *N, long int &N_go,
+		int verbose_level);
+	void order_structure_relative_to_subgroup(
+			int *C_sub,
+		int *Order, int *Residue, int verbose_level);
+	int element_from_path_and_test_permutation_property(
+			int *elt, int &fail_depth, int verbose_level);
+	void permutation_subgroup(
+			std::vector<long int> &Gens,
+			int verbose_level);
 
 
 	// sims_io.cpp:
@@ -1747,6 +1758,10 @@ public:
 			std::ostream &ost, int verbose_level);
 	void report_all_transversal_elements(
 			std::ostream &ost, int verbose_level);
+	void report_basic_orbit_transversal(
+			std::ostream &ost, int i, int verbose_level);
+	void report_basic_orbit_elements_only(
+			std::ostream &ost, int i, int verbose_level);
 	void save_list_of_elements(
 			std::string &fname,
 		int verbose_level);

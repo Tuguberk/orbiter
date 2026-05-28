@@ -696,8 +696,9 @@ void string_tools::chop_string_comma_separated(
 
 
 
-void string_tools::convert_arguments(
+void string_tools::convert_arguments_and_add_sentinel(
 		int &argc, const char **argv, std::string *&Argv)
+// adds one extra argument for safety because of lookahead
 {
 	int i;
 	vector<string> Arg_vec;
@@ -759,10 +760,14 @@ void string_tools::convert_arguments(
 		}
 	}
 	argc = Arg_vec.size();
-	Argv = new string[argc];
+	Argv = new string[argc + 1];
 	for (i = 0; i < argc; i++) {
 		Argv[i].assign(Arg_vec[i]);
 	}
+	string s_end;
+
+	s_end = "THE_END";
+	Argv[argc].assign(s_end);
 
 }
 

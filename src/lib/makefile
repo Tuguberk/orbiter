@@ -432,7 +432,6 @@ ORBITER_MODULES= \
 		layer3_group_actions/groups/sims_main.o \
 		layer3_group_actions/groups/sims.o \
 		layer3_group_actions/groups/sims2.o \
-		layer3_group_actions/groups/sims3.o \
 		layer3_group_actions/groups/strong_generators.o \
 		layer3_group_actions/groups/strong_generators_groups.o \
 		layer3_group_actions/groups/subgroup_lattice_layer.o \

@@ -22,7 +22,6 @@ MODULES = \
 	sims_main.o \
 	sims.o \
 	sims2.o \
-	sims3.o \
 	strong_generators.o \
 	strong_generators_groups.o \
 	subgroup_lattice_layer.o \

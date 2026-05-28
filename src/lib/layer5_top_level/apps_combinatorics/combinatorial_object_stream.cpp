@@ -1855,7 +1855,7 @@ void combinatorial_object_stream::do_algebraic_degree(
 		{
 			string s;
 
-			s = HPD[d].stringify_equation(eqn_reduced);
+			s = HPD[d].stringify_equation(eqn_reduced, verbose_level);
 
 			cout << "combinatorial_object_stream::do_algebraic_degree "
 					"eqn_reduced=" << s << endl;
@@ -1882,7 +1882,7 @@ void combinatorial_object_stream::do_algebraic_degree(
 
 		string s;
 
-		s = HPD[d].stringify_equation(eqn_reduced2);
+		s = HPD[d].stringify_equation(eqn_reduced2, verbose_level);
 
 		cout << "combinatorial_object_stream::do_algebraic_degree "
 				"eqn_reduced2=" << s << endl;

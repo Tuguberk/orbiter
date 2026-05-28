@@ -125,6 +125,58 @@ int bitvector::s_i(
 	}
 }
 
+void bitvector::write_file(
+		std::string &fname, int verbose_level)
+{
+	int f_v = (verbose_level >= 1);
+	other::orbiter_kernel_system::file_io Fio;
+
+	if (f_v) {
+		cout << "bitvector::write_file" << endl;
+	}
+	if (f_v) {
+		cout << "bitvector::write_file data size = "
+			<< length << endl;
+	}
+	{
+		ofstream fp(fname, ios::binary);
+
+		save(fp);
+	}
+	if (f_v) {
+		cout << "bitvector::write_file Written file "
+				<< fname << " of size " << Fio.file_size(fname) << endl;
+	}
+	if (f_v) {
+		cout << "bitvector::write_file done" << endl;
+	}
+}
+
+void bitvector::read_file(
+		std::string &fname, int verbose_level)
+{
+	int f_v = (verbose_level >= 1);
+	other::orbiter_kernel_system::file_io Fio;
+
+	if (f_v) {
+		cout << "bitvector::read_file reading file "
+				<< fname << " of size " << Fio.file_size(fname) << endl;
+	}
+	if (f_v) {
+		cout << "bitvector::read_file Reading file "
+			<< fname << " of size " << Fio.file_size(fname) << endl;
+	}
+	{
+		ifstream fp(fname, ios::binary);
+
+		load(fp);
+	}
+	if (f_v) {
+		cout << "bitvector::read_file done" << endl;
+	}
+}
+
+
 void bitvector::save(
 		std::ofstream &fp)
 {

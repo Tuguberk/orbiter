@@ -210,7 +210,7 @@ void sims::compute_base_orbit(
 		int lvl, int verbose_level)
 // applies all generators at the given level to compute
 // the corresponding basic orbit.
-// the generators are the first nb_gen[lvl] in the generator arry
+// the generators are the first nb_gen[lvl] in the generator array
 {
 	int f_v = (verbose_level >= 1);
 	//int f_vv = (verbose_level >= 2);

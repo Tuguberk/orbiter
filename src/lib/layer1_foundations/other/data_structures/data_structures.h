@@ -384,6 +384,10 @@ public:
 			long int i);
 	int s_i(
 			long int i);
+	void write_file(
+			std::string &fname, int verbose_level);
+	void read_file(
+			std::string &fname, int verbose_level);
 	void save(
 			std::ofstream &fp);
 	void load(
@@ -2350,7 +2354,7 @@ public:
 			const char *str, int &argc, char **&argv);
 	void chop_string_comma_separated(
 			const char *str, int &argc, char **&argv);
-	void convert_arguments(
+	void convert_arguments_and_add_sentinel(
 			int &argc, const char **argv, std::string *&Argv);
 	char get_character(
 			std::istream & is, int verbose_level);

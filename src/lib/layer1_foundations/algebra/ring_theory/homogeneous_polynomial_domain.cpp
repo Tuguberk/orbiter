@@ -1210,6 +1210,7 @@ std::string homogeneous_polynomial_domain::stringify_monomial(
 	int j, a, f_first = true;
 	string output;
 
+	output = "";
 	for (j = 0; j < nb_variables; j++) {
 		a = Monomials[i * nb_variables + j];
 		if (a == 0) {
@@ -1475,9 +1476,10 @@ void homogeneous_polynomial_domain::print_monomial_latex_str(
 void homogeneous_polynomial_domain::print_equation(
 		std::ostream &ost, int *coeffs)
 {
+	int verbose_level = 1;
 	std::string s;
 
-	s = stringify_equation(coeffs);
+	s = stringify_equation(coeffs, verbose_level);
 	ost << s;
 
 #if 0
@@ -1507,17 +1509,33 @@ void homogeneous_polynomial_domain::print_equation(
 
 
 std::string homogeneous_polynomial_domain::stringify_equation(
-		int *coeffs)
+		int *coeffs, int verbose_level)
 {
+	int f_v = (verbose_level >= 1);
+
+	if (f_v) {
+		cout << "homogeneous_polynomial_domain::stringify_equation" << endl;
+	}
+
 	int i, c;
 	int f_first = true;
 	string s;
 
-	//cout << "homogeneous_polynomial_domain::print_equation" << endl;
+	//cout << "homogeneous_polynomial_domain::stringify_equation" << endl;
+
+	s = "";
 	for (i = 0; i < nb_monomials; i++) {
+
+		string s1;
+
+
 		c = coeffs[i];
 		if (c == 0) {
 			continue;
+		}
+		if (f_v) {
+			cout << "homogeneous_polynomial_domain::stringify_equation "
+					"monomial " << i << " / " << nb_monomials << endl;
 		}
 		if (f_first) {
 			f_first = false;
@@ -1527,10 +1545,19 @@ std::string homogeneous_polynomial_domain::stringify_equation(
 		}
 		if (c > 1) {
 			//F->print_element(ost, c);
-			s += std::to_string(c) + "*";
+			s += std::to_string(c);
+			s += "*";
 		}
-		s += stringify_monomial(i);
+		s1 = stringify_monomial(i);
+		if (f_v) {
+			cout << "homogeneous_polynomial_domain::stringify_equation "
+					"monomial " << i << " / " << nb_monomials << " s1=" << s1 << endl;
+		}
+		s += s1;
 		//print_monomial(ost, i);
+	}
+	if (f_v) {
+		cout << "homogeneous_polynomial_domain::stringify_equation done" << endl;
 	}
 	return s;
 }
