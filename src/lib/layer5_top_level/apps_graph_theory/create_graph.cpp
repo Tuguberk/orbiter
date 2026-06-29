@@ -708,6 +708,26 @@ void create_graph::init(
 
 	}
 
+	else if (description->f_double_cover) {
+		if (f_v) {
+			cout << "create_graph::init "
+					"f_double_cover" << endl;
+		}
+
+		if (f_v) {
+			cout << "create_graph::init "
+					"before create_double_cover" << endl;
+		}
+		create_double_cover(
+				description->double_cover_label,
+				verbose_level);
+		if (f_v) {
+			cout << "create_graph::init "
+					"after create_double_cover" << endl;
+		}
+
+	}
+
 
 	if (description->f_subset) {
 		if (f_v) {
@@ -2096,6 +2116,69 @@ void create_graph::make_adjacency_bitvector(
 
 	if (f_v) {
 		cout << "create_graph::make_adjacency_bitvector done" << endl;
+	}
+}
+
+
+void create_graph::create_double_cover(
+		std::string &graph_label,
+		int verbose_level)
+{
+	int f_v = (verbose_level >= 1);
+
+	if (f_v) {
+		cout << "create_graph::create_double_cover" << endl;
+		cout << "create_graph::create_double_cover graph_label=" << graph_label << endl;
+	}
+
+	combinatorics::graph_theory::colored_graph *G0;
+
+	G0 = Get_graph(graph_label);
+
+	int n0 = G0->nb_points;
+
+	if (f_v) {
+		cout << "create_graph::create_double_cover "
+				"source graph has " << n0 << " vertices" << endl;
+	}
+
+	int n = 2 * n0 + 1;
+
+	if (f_v) {
+		cout << "create_graph::create_double_cover "
+				"new graph has " << n << " vertices" << endl;
+	}
+
+	N = n;
+	Adj = NEW_int(N * N);
+	Int_vec_zero(Adj, N * N);
+
+	int i, j;
+
+	for (i = 0; i < n0; i++) {
+		for (j = 0; j < n0; j++) {
+			Adj[i * N + j] = G0->is_adjacent(i, j);
+		}
+	}
+
+	for (i = 0; i < n0; i++) {
+		for (j = 0; j < n0; j++) {
+			Adj[(n0 + i) * N + (n0 + j)] = G0->is_adjacent(i, j);
+		}
+	}
+
+	int z = 2 * n0;
+
+	for (i = 0; i < n0; i++) {
+		Adj[z * N + (n0 + i)] = 1;
+		Adj[(n0 + i) * N + z] = 1;
+	}
+
+	label = "double_cover_" + graph_label;
+	label_tex = "{\\rm double\\_cover\\_{" + graph_label + "}}";
+
+	if (f_v) {
+		cout << "create_graph::create_double_cover done" << endl;
 	}
 }
 

@@ -233,6 +233,9 @@ public:
 	std::string Cayley_graph_group;
 	std::string Cayley_graph_gens;
 
+	int f_double_cover;
+	std::string double_cover_label;
+
 	std::vector<graph_modification_description> Modifications;
 
 	create_graph_description();
@@ -342,6 +345,9 @@ public:
 			int verbose_level);
 	void make_adjacency_bitvector(
 			std::string &data_text, int N,
+			int verbose_level);
+	void create_double_cover(
+			std::string &graph_label,
 			int verbose_level);
 
 };

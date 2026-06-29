@@ -801,7 +801,21 @@ void quartic_curve_create::create_quartic_curve_by_normal_form(
 	}
 
 
+	QOG = NEW_OBJECT(quartic_curve_object_with_group);
 
+	if (f_v) {
+		cout << "quartic_curve_create::create_quartic_curve_by_normal_form "
+				"before QOG->init (with NULL group)" << endl;
+	}
+	QOG->init(
+			QCDA,
+			QO,
+			NULL,
+			verbose_level);
+	if (f_v) {
+		cout << "quartic_curve_create::create_quartic_curve_by_normal_form "
+				"after QOG->init" << endl;
+	}
 
 	prefix = "by_normal_form_q" + std::to_string(F->q);
 	label_txt = "by_normal_form_q" + std::to_string(F->q);

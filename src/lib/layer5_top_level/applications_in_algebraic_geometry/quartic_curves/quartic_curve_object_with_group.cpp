@@ -128,6 +128,35 @@ void quartic_curve_object_with_group::export_something(
 				"Written file " << fname << " of size "
 				<< Fio.file_size(fname) << endl;
 	}
+	else if (ST.stringcmp(what, "Kovalevski_incidence_matrix") == 0) {
+
+		fname = fname_base + "_Kovalevski_incidence_matrix.csv";
+
+		int nb_rows = QO->QP->Kovalevski->Incidence_structure_by_flags->nb_rows;
+		int nb_cols = QO->QP->Kovalevski->Incidence_structure_by_flags->nb_cols;
+		int nb_flags = QO->QP->Kovalevski->Incidence_structure_by_flags->nb_flags;
+		int *flags = QO->QP->Kovalevski->Incidence_structure_by_flags->flags;
+
+		int *Incma = new int[nb_rows * nb_cols];
+		int i;
+		for (i = 0; i < nb_rows * nb_cols; i++) {
+			Incma[i] = 0;
+		}
+		for (i = 0; i < nb_flags; i++) {
+			int r = flags[i] / nb_cols;
+			int c = flags[i] % nb_cols;
+			Incma[r * nb_cols + c] = 1;
+		}
+
+		Fio.Csv_file_support->int_matrix_write_csv(
+				fname, Incma, nb_rows, nb_cols);
+
+		cout << "quartic_curve_object_with_group::export_something "
+				"Written file " << fname << " of size "
+				<< Fio.file_size(fname) << endl;
+
+		delete [] Incma;
+	}
 	else {
 		cout << "quartic_curve_object_with_group::export_something "
 				"unrecognized export target: " << what << endl;

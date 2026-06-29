@@ -133,6 +133,9 @@ create_graph_description::create_graph_description()
 	//std::string Cayley_graph_group;
 	//std::string Cayley_graph_gens;
 
+	f_double_cover = false;
+	//std::string double_cover_label;
+
 	//std::vector<graph_modification_description> Modifications;
 
 }
@@ -424,6 +427,15 @@ int create_graph_description::read_arguments(
 			}
 		}
 
+		else if (ST.stringcmp(argv[i], "-double_cover") == 0) {
+			f_double_cover = true;
+			double_cover_label.assign(argv[++i]);
+			if (f_v) {
+				cout << "-double_cover "
+						<< double_cover_label << endl;
+			}
+		}
+
 
 		else if (M.check_and_parse_argument(
 				argc, i, argv,
@@ -567,6 +579,9 @@ void create_graph_description::print()
 	}
 	if (f_Cayley_graph) {
 		cout << "-Cayley_graph " << Cayley_graph_group << " " << Cayley_graph_gens << endl;
+	}
+	if (f_double_cover) {
+		cout << "-double_cover " << double_cover_label << endl;
 	}
 
 	int i;
